@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Search, Filter, Grid, List } from 'lucide-react';
+import { Search, Filter, Grid, List, X } from 'lucide-react';
 import { ThreeViewer, defaultPlanets } from '@/components/ThreeViewer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 // Mock exoplanet data
 const mockExoplanets = [
@@ -67,6 +68,7 @@ export default function Explore() {
   const [selectedObject, setSelectedObject] = useState(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [filteredResults, setFilteredResults] = useState(mockExoplanets);
+  const [is3DModalOpen, setIs3DModalOpen] = useState(false);
 
   useEffect(() => {
     const query = searchParams.get('q');
@@ -243,7 +245,11 @@ export default function Explore() {
                           {selectedObject.description}
                         </p>
                         <div className="flex flex-wrap gap-2">
-                          <Button size="sm" className="stellar-glow">
+                          <Button 
+                            size="sm" 
+                            className="stellar-glow"
+                            onClick={() => setIs3DModalOpen(true)}
+                          >
                             {t('object.view3d')}
                           </Button>
                           <Button size="sm" variant="outline">
@@ -259,6 +265,54 @@ export default function Explore() {
           </div>
         </div>
       </div>
+
+      {/* 3D Modal */}
+      <Dialog open={is3DModalOpen} onOpenChange={setIs3DModalOpen}>
+        <DialogContent className="max-w-6xl w-full h-[80vh] p-0 bg-black/90 border-primary/20">
+          <DialogHeader className="p-6 pb-0">
+            <DialogTitle className="font-orbitron text-2xl text-white">
+              {selectedObject ? `${selectedObject.name} - ` : 'Solar System - '}3D Interactive View
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="flex-1 p-6 pt-4">
+            <div className="h-full bg-black rounded-lg overflow-hidden stellar-glow">
+              <ThreeViewer 
+                planets={defaultPlanets}
+                starColor={selectedObject ? '#ff6b35' : '#FFD700'}
+                showOrbits={true}
+              />
+            </div>
+            
+            {selectedObject && (
+              <div className="mt-4 p-4 bg-muted/10 rounded-lg border border-primary/20">
+                <h4 className="font-orbitron text-lg text-white mb-2">{selectedObject.name}</h4>
+                <p className="text-sm text-muted-foreground mb-4">
+                  {selectedObject.description}
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div className="text-center p-2 bg-primary/10 rounded">
+                    <div className="text-primary font-medium">{selectedObject.radius} R⊕</div>
+                    <div className="text-xs text-muted-foreground">Radius</div>
+                  </div>
+                  <div className="text-center p-2 bg-primary/10 rounded">
+                    <div className="text-primary font-medium">{selectedObject.mass} M⊕</div>
+                    <div className="text-xs text-muted-foreground">Mass</div>
+                  </div>
+                  <div className="text-center p-2 bg-primary/10 rounded">
+                    <div className="text-primary font-medium">{selectedObject.period} days</div>
+                    <div className="text-xs text-muted-foreground">Period</div>
+                  </div>
+                  <div className="text-center p-2 bg-primary/10 rounded">
+                    <div className="text-primary font-medium">{selectedObject.distance} ly</div>
+                    <div className="text-xs text-muted-foreground">Distance</div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

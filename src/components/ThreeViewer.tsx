@@ -137,7 +137,7 @@ export function ThreeViewer({
   showOrbits = true 
 }: ThreeViewerProps) {
   return (
-    <div className="w-full h-96 bg-black rounded-lg overflow-hidden stellar-glow">
+    <div className="w-full h-full bg-black rounded-lg overflow-hidden stellar-glow">
       <Canvas camera={{ position: [0, 5, 10], fov: 75 }}>
         <Scene 
           planets={planets} 
