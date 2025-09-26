@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 // Mock exoplanet data
 const mockExoplanets = [
@@ -268,15 +268,18 @@ export default function Explore() {
 
       {/* 3D Modal */}
       <Dialog open={is3DModalOpen} onOpenChange={setIs3DModalOpen}>
-        <DialogContent className="max-w-6xl w-full h-[80vh] p-0 bg-black/90 border-primary/20">
-          <DialogHeader className="p-6 pb-0">
+        <DialogContent className="max-w-6xl w-[95vw] max-h-[90vh] p-0 bg-black/90 border-primary/20 flex flex-col">
+          <DialogHeader className="p-6 pb-0 shrink-0">
             <DialogTitle className="font-orbitron text-2xl text-white">
               {selectedObject ? `${selectedObject.name} - ` : 'Solar System - '}3D Interactive View
             </DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Explore the {selectedObject ? selectedObject.name : 'solar system'} in an interactive 3D environment. Use mouse to rotate, zoom, and pan.
+            </DialogDescription>
           </DialogHeader>
           
-          <div className="flex-1 p-6 pt-4">
-            <div className="h-full bg-black rounded-lg overflow-hidden stellar-glow">
+          <div className="flex-1 p-6 pt-4 min-h-0 flex flex-col">
+            <div className="flex-1 bg-black rounded-lg overflow-hidden stellar-glow min-h-[400px]">
               <ThreeViewer 
                 planets={defaultPlanets}
                 starColor={selectedObject ? '#ff6b35' : '#FFD700'}
@@ -285,7 +288,7 @@ export default function Explore() {
             </div>
             
             {selectedObject && (
-              <div className="mt-4 p-4 bg-muted/10 rounded-lg border border-primary/20">
+              <div className="mt-4 p-4 bg-muted/10 rounded-lg border border-primary/20 shrink-0">
                 <h4 className="font-orbitron text-lg text-white mb-2">{selectedObject.name}</h4>
                 <p className="text-sm text-muted-foreground mb-4">
                   {selectedObject.description}
