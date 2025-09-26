@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -289,10 +288,8 @@ export default function Astronomy() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
-      <div className="pt-20 px-4">
+    <div className="min-h-screen bg-background pt-20">
+      <div className="px-4">
         <div className="container mx-auto">
           {/* Header */}
           <div className="text-center mb-12">

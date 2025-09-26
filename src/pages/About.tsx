@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -74,10 +73,8 @@ export default function About() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
-      <div className="pt-20 px-4">
+    <div className="min-h-screen bg-background pt-20">
+      <div className="px-4">
         <div className="container mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Search, Filter, Grid, List } from 'lucide-react';
-import { Navigation } from '@/components/Navigation';
 import { ThreeViewer, defaultPlanets } from '@/components/ThreeViewer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -99,10 +98,8 @@ export default function Explore() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
-      <div className="pt-20 px-4">
+    <div className="min-h-screen bg-background pt-20">
+      <div className="px-4">
         <div className="container mx-auto">
           {/* Search Header */}
           <div className="mb-8">

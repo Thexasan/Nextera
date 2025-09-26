@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Rocket, Search, Globe, Zap, ArrowRight, Mic } from 'lucide-react';
-import { Navigation } from '@/components/Navigation';
 import spaceHeroBg from '@/assets/space-hero-bg.jpg';
 import astronautSpace from '@/assets/astronaut-space.jpg';
 
@@ -50,11 +49,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-      
       {/* Hero Section */}
       <section 
-        className="relative min-h-screen flex items-center justify-center overflow-hidden bg-stars"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden bg-stars pt-16"
         style={{
           backgroundImage: `url(${spaceHeroBg})`,
           backgroundSize: 'cover',
