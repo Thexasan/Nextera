@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        'orbitron': ['Orbitron', 'monospace'],
+        'inter': ['Inter', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -22,10 +26,12 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          glow: "hsl(var(--secondary-glow))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -38,6 +44,7 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          glow: "hsl(var(--accent-glow))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -47,16 +54,26 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        nasa: {
+          blue: "hsl(var(--nasa-blue))",
+          red: "hsl(var(--nasa-red))",
+          white: "hsl(var(--nasa-white))",
         },
+      },
+      backgroundImage: {
+        'gradient-cosmic': 'var(--gradient-cosmic)',
+        'gradient-stellar': 'var(--gradient-stellar)',
+        'gradient-nebula': 'var(--gradient-nebula)',
+        'gradient-aurora': 'var(--gradient-aurora)',
+      },
+      boxShadow: {
+        'stellar': 'var(--shadow-stellar)',
+        'nebula': 'var(--shadow-nebula)',
+        'cosmic': 'var(--shadow-cosmic)',
+      },
+      transitionDuration: {
+        'cosmic': '600ms',
+        'stellar': '300ms',
       },
       borderRadius: {
         lg: "var(--radius)",
