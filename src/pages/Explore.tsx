@@ -202,7 +202,7 @@ export default function Explore() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => setIsFilterOpen(true)}>
                   <Filter className="w-4 h-4 mr-2" />
                   {t('search.filters')}
                 </Button>
