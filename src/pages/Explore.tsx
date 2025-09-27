@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Search, Filter, Grid, List, X } from 'lucide-react';
+import { Search, Filter, Grid, List, Mic } from 'lucide-react';
 import { ThreeViewer, defaultPlanets } from '@/components/ThreeViewer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import VoiceSearchButton from '@/components/VoiceSearchButton';
+import FiltersSheet, { Filters } from '@/components/FiltersSheet';
 
 // Mock exoplanet data
 const mockExoplanets = [
@@ -63,12 +67,17 @@ const mockExoplanets = [
 
 export default function Explore() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { t: _t } = useTranslation();
+  const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
-  const [selectedObject, setSelectedObject] = useState(null);
+  const [selectedObject, setSelectedObject] = useState<any>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [filteredResults, setFilteredResults] = useState(mockExoplanets);
   const [is3DModalOpen, setIs3DModalOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isFavLoading, setIsFavLoading] = useState(false);
 
   useEffect(() => {
     const query = searchParams.get('q');
@@ -99,6 +108,64 @@ export default function Explore() {
     performSearch(searchQuery);
   };
 
+  const onApplyFilters = (filters: Filters) => {
+    let results = [...mockExoplanets];
+    if (filters.disposition) {
+      results = results.filter(p => p.disposition === filters.disposition);
+    }
+    if (filters.minRadius != null) {
+      results = results.filter(p => p.radius >= filters.minRadius!);
+    }
+    if (filters.maxRadius != null) {
+      results = results.filter(p => p.radius <= filters.maxRadius!);
+    }
+    if (filters.minMass != null) {
+      results = results.filter(p => p.mass >= filters.minMass!);
+    }
+    if (filters.maxMass != null) {
+      results = results.filter(p => p.mass <= filters.maxMass!);
+    }
+    if (filters.minPeriod != null) {
+      results = results.filter(p => p.period >= filters.minPeriod!);
+    }
+    if (filters.maxPeriod != null) {
+      results = results.filter(p => p.period <= filters.maxPeriod!);
+    }
+    setFilteredResults(results);
+    setIsFilterOpen(false);
+  };
+
+  const addToFavorites = async (planet: any) => {
+    try {
+      setIsFavLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) {
+        toast({ title: 'Login required', description: 'Please sign in to save favorites.' });
+        navigate('/auth');
+        return;
+      }
+      const { error } = await supabase.from('favorites').insert({
+        user_id: session.user.id,
+        object_id: planet.id,
+        object_name: planet.name,
+        object_type: 'exoplanet'
+      });
+      if (error) {
+        if ((error as any).code === '23505') {
+          toast({ title: 'Already saved', description: `${planet.name} is already in your favorites.` });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({ title: 'Added to favorites', description: `${planet.name} saved.` });
+      }
+    } catch (err: any) {
+      toast({ title: 'Error', description: err.message ?? 'Failed to add to favorites', variant: 'destructive' });
+    } finally {
+      setIsFavLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background pt-20">
       <div className="px-4">
@@ -115,9 +182,18 @@ export default function Explore() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t('search.placeholder')}
-                  className="pl-10 bg-muted/50 border-border/50 focus:border-primary"
+                  className="pl-10 pr-16 bg-muted/50 border-border/50 focus:border-primary"
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <VoiceSearchButton
+                    onResult={(text) => {
+                      setSearchQuery(text);
+                      setSearchParams({ q: text });
+                      performSearch(text);
+                    }}
+                  />
+                </div>
               </div>
               <Button type="submit" className="stellar-glow">
                 Search
@@ -266,9 +342,11 @@ export default function Explore() {
         </div>
       </div>
 
+      <FiltersSheet open={isFilterOpen} onOpenChange={setIsFilterOpen} onApply={onApplyFilters} />
+
       {/* 3D Modal */}
       <Dialog open={is3DModalOpen} onOpenChange={setIs3DModalOpen}>
-        <DialogContent className="max-w-6xl w-[95vw] max-h-[90vh] p-0 bg-black/90 border-primary/20 flex flex-col">
+        <DialogContent className="max-w-none w-screen h-screen max-h-screen p-0 bg-black/90 border-primary/20 flex flex-col">
           <DialogHeader className="p-6 pb-0 shrink-0">
             <DialogTitle className="font-orbitron text-2xl text-white">
               {selectedObject ? `${selectedObject.name} - ` : 'Solar System - '}3D Interactive View

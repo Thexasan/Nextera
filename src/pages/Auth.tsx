@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,11 +6,32 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Rocket, User, Lock, Mail, Globe, ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/components/ui/use-toast';
 import nasaLogo from '@/assets/nasa-logo.png';
 
 export default function Auth() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const loginSchema = z.object({
+    email: z.string().trim().email('Invalid email'),
+    password: z.string().min(6, 'Password must be at least 6 characters')
+  });
+
+  const signupSchema = z.object({
+    email: z.string().trim().email('Invalid email'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string().min(6),
+    name: z.string().trim().min(1)
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword']
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [signupForm, setSignupForm] = useState({ 
@@ -20,33 +41,59 @@ export default function Auth() {
     name: '' 
   });
 
-  const handleLogin = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        navigate('/', { replace: true });
+      }
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        navigate('/', { replace: true });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      setIsLoading(true);
+      const { email, password } = loginSchema.parse(loginForm);
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      toast({ title: 'Signed in', description: 'Welcome back!' });
+      navigate('/', { replace: true });
+    } catch (err: any) {
+      toast({ title: 'Sign in failed', description: err.message ?? 'Please try again', variant: 'destructive' });
+    } finally {
       setIsLoading(false);
-      // Here you would integrate with Supabase auth
-      console.log('Login attempted:', loginForm);
-    }, 1500);
+    }
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
+const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (signupForm.password !== signupForm.confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      setIsLoading(true);
+      const parsed = signupSchema.parse(signupForm);
+      const redirectUrl = `${window.location.origin}/`;
+      const { error } = await supabase.auth.signUp({
+        email: parsed.email,
+        password: parsed.password,
+        options: {
+          data: { full_name: parsed.name },
+          emailRedirectTo: redirectUrl
+        }
+      });
+      if (error) throw error;
+      toast({ title: 'Sign up successful', description: 'Check your email to confirm your account.' });
+    } catch (err: any) {
+      toast({ title: 'Sign up failed', description: err.message ?? 'Please try again', variant: 'destructive' });
+    } finally {
       setIsLoading(false);
-      // Here you would integrate with Supabase auth
-      console.log('Signup attempted:', signupForm);
-    }, 1500);
+    }
   };
 
   return (

@@ -1,6 +1,6 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text } from '@react-three/drei';
+import { OrbitControls, Text, Stars, Html } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface Planet {
@@ -43,10 +43,14 @@ function Star({ color = '#FFD700' }: { color?: string }) {
 function Planet({ planet, time }: { planet: Planet; time: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const orbitRef = useRef<THREE.Group>(null);
+  const [hovered, setHovered] = useState(false);
   
   useFrame(() => {
     if (orbitRef.current) {
       orbitRef.current.rotation.y = time * (1 / planet.period) * 0.1;
+    }
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.01; // self rotation
     }
   });
 
@@ -55,9 +59,20 @@ function Planet({ planet, time }: { planet: Planet; time: number }) {
       <mesh 
         ref={meshRef}
         position={[planet.distance, 0, 0]}
+        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
+        onPointerOut={(e) => { e.stopPropagation(); setHovered(false); }}
       >
         <sphereGeometry args={[planet.radius, 16, 16]} />
-        <meshStandardMaterial color={planet.color} />
+        <meshStandardMaterial color={planet.color} emissive={hovered ? planet.color : '#000'} emissiveIntensity={hovered ? 0.2 : 0} />
+        {hovered && (
+          <Html position={[0, planet.radius + 0.6, 0]} center>
+            <div className="px-2 py-1 rounded bg-black/70 text-white text-xs border border-white/10">
+              <div className="font-semibold">{planet.name}</div>
+              <div>Orbit: {planet.period} days</div>
+              <div>Radius: {planet.radius} AU</div>
+            </div>
+          </Html>
+        )}
       </mesh>
       
       {/* Planet label */}
@@ -105,6 +120,7 @@ function Scene({ planets, starColor, showOrbits }: ThreeViewerProps) {
 
   return (
     <>
+      <Stars radius={60} depth={40} count={3000} factor={4} saturation={0} fade speed={1} />
       <ambientLight intensity={0.2} />
       <Star color={starColor} />
       
@@ -125,7 +141,7 @@ function Scene({ planets, starColor, showOrbits }: ThreeViewerProps) {
         enableZoom={true}
         enableRotate={true}
         minDistance={2}
-        maxDistance={20}
+        maxDistance={40}
       />
     </>
   );
