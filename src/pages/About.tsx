@@ -12,39 +12,42 @@ import {
   Zap,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-const features = [
+type FeatureItem = {
+  icon: React.ComponentType<{ className?: string }>;
+  titleKey: string;
+  descriptionKey: string;
+};
+
+const features: FeatureItem[] = [
   {
     icon: Search,
-    title: "Smart Search",
-    description:
-      "AI-powered search across NASA's exoplanet database with semantic understanding",
+    titleKey: "about.features.smartSearch.title",
+    descriptionKey: "about.features.smartSearch.desc",
   },
   {
     icon: Globe,
-    title: "3D Visualization",
-    description:
-      "Interactive 3D models of planetary systems with realistic orbital mechanics",
+    titleKey: "about.features.visualization.title",
+    descriptionKey: "about.features.visualization.desc",
   },
   {
     icon: Mic,
-    title: "TURO Voice Assistant",
-    description: "Voice-controlled exploration with natural language commands",
+    titleKey: "about.features.voice.title",
+    descriptionKey: "about.features.voice.desc",
   },
   {
     icon: Database,
-    title: "Real NASA Data",
-    description:
-      "Direct integration with NASA Exoplanet Archive and Image Library",
+    titleKey: "about.features.data.title",
+    descriptionKey: "about.features.data.desc",
   },
   {
     icon: Users,
-    title: "Multi-language Support",
-    description: "Available in English, Russian, Spanish, and more languages",
+    titleKey: "about.features.multilang.title",
+    descriptionKey: "about.features.multilang.desc",
   },
   {
     icon: Telescope,
-    title: "Educational Content",
-    description: "Comprehensive astronomy information and planetary data",
+    titleKey: "about.features.education.title",
+    descriptionKey: "about.features.education.desc",
   },
 ];
 
@@ -64,27 +67,23 @@ export default function About() {
               </h1>
             </div>
             <p className="text-xl md:text-2xl text-muted-foreground mb-6 font-orbitron">
-              Celestial Knowledge & 3D Observatory
+              {t("about.hero.subtitle")}
             </p>
             <p className="text-lg text-foreground/80 max-w-3xl mx-auto mb-8">
-              Nextera transforms space exploration by combining NASA's vast
-              astronomical databases with cutting-edge 3D visualization and
-              AI-powered search capabilities. Our mission is to make the
-              universe more accessible to researchers, educators, and space
-              enthusiasts worldwide.
+              {t("about.hero.description")}
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               <Badge variant="secondary" className="bg-primary/10 text-primary">
-                NASA Powered
+                {t("about.hero.badge.nasa")}
               </Badge>
               <Badge variant="secondary" className="bg-accent/10 text-accent">
-                Open Source
+                {t("about.hero.badge.oss")}
               </Badge>
               <Badge
                 variant="secondary"
                 className="bg-secondary/20 text-secondary-foreground"
               >
-                International
+                {t("about.hero.badge.international")}
               </Badge>
             </div>
           </div>
@@ -94,7 +93,7 @@ export default function About() {
             <Card className="cosmic-shadow stellar-glow">
               <CardHeader className="text-center">
                 <CardTitle className="text-3xl font-orbitron bg-gradient-stellar bg-clip-text text-transparent">
-                  Our Mission
+                  {t("about.mission.title")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-center">
@@ -104,11 +103,10 @@ export default function About() {
                       <Target className="h-8 w-8 text-primary-foreground" />
                     </div>
                     <h3 className="text-xl font-orbitron font-semibold">
-                      Accessibility
+                      {t("about.mission.accessibility.title")}
                     </h3>
                     <p className="text-muted-foreground">
-                      Make space exploration data accessible to everyone,
-                      regardless of technical background
+                      {t("about.mission.accessibility.desc")}
                     </p>
                   </div>
 
@@ -117,11 +115,10 @@ export default function About() {
                       <Zap className="h-8 w-8 text-secondary-foreground" />
                     </div>
                     <h3 className="text-xl font-orbitron font-semibold">
-                      Innovation
+                      {t("about.mission.innovation.title")}
                     </h3>
                     <p className="text-muted-foreground">
-                      Push the boundaries of data visualization and
-                      human-computer interaction in space science
+                      {t("about.mission.innovation.desc")}
                     </p>
                   </div>
 
@@ -130,11 +127,10 @@ export default function About() {
                       <Users className="h-8 w-8 text-accent-foreground" />
                     </div>
                     <h3 className="text-xl font-orbitron font-semibold">
-                      Community
+                      {t("about.mission.community.title")}
                     </h3>
                     <p className="text-muted-foreground">
-                      Foster a global community of space enthusiasts and
-                      researchers
+                      {t("about.mission.community.desc")}
                     </p>
                   </div>
                 </div>
@@ -145,7 +141,7 @@ export default function About() {
           {/* Features Grid */}
           <div className="mb-16">
             <h2 className="text-4xl font-orbitron font-bold text-center mb-12 bg-gradient-stellar bg-clip-text text-transparent">
-              Platform Features
+              {t("about.features.title")}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {features.map((feature, index) => (
@@ -158,10 +154,10 @@ export default function About() {
                       <feature.icon className="h-8 w-8 text-primary-foreground" />
                     </div>
                     <h3 className="text-xl font-orbitron font-semibold mb-4">
-                      {feature.title}
+                      {t(feature.titleKey)}
                     </h3>
                     <p className="text-muted-foreground">
-                      {feature.description}
+                      {t(feature.descriptionKey)}
                     </p>
                   </CardContent>
                 </Card>
@@ -172,14 +168,14 @@ export default function About() {
           {/* Technology Stack */}
           <div className="mb-16">
             <h2 className="text-4xl font-orbitron font-bold text-center mb-12 bg-gradient-stellar bg-clip-text text-transparent">
-              Technology Stack
+              {t("about.tech.title")}
             </h2>
             <Card className="cosmic-shadow">
               <CardContent className="p-8">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                   <div>
                     <h4 className="font-orbitron font-semibold mb-2">
-                      Frontend
+                      {t("about.tech.frontend")}
                     </h4>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       <p>React + TypeScript</p>
@@ -191,7 +187,7 @@ export default function About() {
 
                   <div>
                     <h4 className="font-orbitron font-semibold mb-2">
-                      Backend
+                      {t("about.tech.backend")}
                     </h4>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       <p>Supabase</p>
@@ -203,7 +199,7 @@ export default function About() {
 
                   <div>
                     <h4 className="font-orbitron font-semibold mb-2">
-                      AI & ML
+                      {t("about.tech.aiml")}
                     </h4>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       <p>TensorFlow</p>
@@ -215,7 +211,7 @@ export default function About() {
 
                   <div>
                     <h4 className="font-orbitron font-semibold mb-2">
-                      Data Sources
+                      {t("about.tech.dataSources")}
                     </h4>
                     <div className="space-y-1 text-sm text-muted-foreground">
                       <p>NASA Exoplanet Archive</p>
@@ -244,30 +240,34 @@ export default function About() {
 
                 <div className="w-full md:w-2/3 text-center md:text-left">
                   <h3 className="text-2xl font-orbitron font-semibold mb-2">
-                    Data attribution
+                    {t("about.attr.title")}
                   </h3>
                   <p className="text-muted-foreground mb-3 max-w-2xl">
-                    This research has made use of the NASA Exoplanet Archive, which is
-                    operated by the California Institute of Technology under contract
-                    with the National Aeronautics and Space Administration.
+                    {t("about.attr.paragraph")}
                   </p>
                   <p className="text-sm text-muted-foreground/80">
-                    Learn more:{" "}
+                    {t("about.attr.learnMore")} {""}
                     <a
                       href="https://exoplanetarchive.ipac.caltech.edu/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary underline hover:text-primary-foreground"
                     >
-                      NASA Exoplanet Archive
+                      {t("about.attr.link.exoplanetArchive")}
                     </a>
                   </p>
                   <div className="mt-4 flex justify-center md:justify-start gap-2">
-                    <Badge variant="secondary" className="bg-primary/10 text-primary">
-                      NASA
+                    <Badge
+                      variant="secondary"
+                      className="bg-primary/10 text-primary"
+                    >
+                      {t("about.attr.badge.nasa")}
                     </Badge>
-                    <Badge variant="secondary" className="bg-muted/10 text-muted-foreground">
-                      Public Data
+                    <Badge
+                      variant="secondary"
+                      className="bg-muted/10 text-muted-foreground"
+                    >
+                      {t("about.attr.badge.publicData")}
                     </Badge>
                   </div>
                 </div>

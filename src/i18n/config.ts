@@ -105,6 +105,55 @@ const resources = {
       "common.error": "Error occurred",
       "common.retry": "Retry",
       "common.close": "Close",
+
+      // About Page
+      "about.hero.subtitle": "Celestial Knowledge & 3D Observatory",
+      "about.hero.description":
+        "Nextera transforms space exploration by combining NASA's vast astronomical databases with cutting-edge 3D visualization and AI-powered search capabilities. Our mission is to make the universe more accessible to researchers, educators, and space enthusiasts worldwide.",
+      "about.hero.badge.nasa": "NASA Powered",
+      "about.hero.badge.oss": "Open Source",
+      "about.hero.badge.international": "International",
+      "about.mission.title": "Our Mission",
+      "about.mission.accessibility.title": "Accessibility",
+      "about.mission.accessibility.desc":
+        "Make space exploration data accessible to everyone, regardless of technical background",
+      "about.mission.innovation.title": "Innovation",
+      "about.mission.innovation.desc":
+        "Push the boundaries of data visualization and human-computer interaction in space science",
+      "about.mission.community.title": "Community",
+      "about.mission.community.desc":
+        "Foster a global community of space enthusiasts and researchers",
+      "about.features.title": "Platform Features",
+      "about.features.smartSearch.title": "Smart Search",
+      "about.features.smartSearch.desc":
+        "AI-powered search across NASA's exoplanet database with semantic understanding",
+      "about.features.visualization.title": "3D Visualization",
+      "about.features.visualization.desc":
+        "Interactive 3D models of planetary systems with realistic orbital mechanics",
+      "about.features.voice.title": "TURO Voice Assistant",
+      "about.features.voice.desc":
+        "Voice-controlled exploration with natural language commands",
+      "about.features.data.title": "Real NASA Data",
+      "about.features.data.desc":
+        "Direct integration with NASA Exoplanet Archive and Image Library",
+      "about.features.multilang.title": "Multi-language Support",
+      "about.features.multilang.desc":
+        "Available in English, Russian, Spanish, and more languages",
+      "about.features.education.title": "Educational Content",
+      "about.features.education.desc":
+        "Comprehensive astronomy information and planetary data",
+      "about.tech.title": "Technology Stack",
+      "about.tech.frontend": "Frontend",
+      "about.tech.backend": "Backend",
+      "about.tech.aiml": "AI & ML",
+      "about.tech.dataSources": "Data Sources",
+      "about.attr.title": "Data attribution",
+      "about.attr.paragraph":
+        "This research has made use of the NASA Exoplanet Archive, which is operated by the California Institute of Technology under contract with the National Aeronautics and Space Administration.",
+      "about.attr.learnMore": "Learn more:",
+      "about.attr.link.exoplanetArchive": "NASA Exoplanet Archive",
+      "about.attr.badge.nasa": "NASA",
+      "about.attr.badge.publicData": "Public Data",
     },
   },
   ru: {
@@ -210,6 +259,55 @@ const resources = {
       "common.error": "Произошла ошибка",
       "common.retry": "Повторить",
       "common.close": "Закрыть",
+
+      // About Page
+      "about.hero.subtitle": "Космические знания и 3D обсерватория",
+      "about.hero.description":
+        "Nextera преобразует исследование космоса, сочетая обширные базы данных NASA с передовой 3D визуализацией и поиском на базе ИИ. Наша миссия — сделать вселенную доступнее для исследователей, преподавателей и энтузиастов космоса по всему миру.",
+      "about.hero.badge.nasa": "На базе NASA",
+      "about.hero.badge.oss": "Открытый исходный код",
+      "about.hero.badge.international": "Интернациональный",
+      "about.mission.title": "Наша миссия",
+      "about.mission.accessibility.title": "Доступность",
+      "about.mission.accessibility.desc":
+        "Сделать данные космических исследований доступными каждому, независимо от технической подготовки",
+      "about.mission.innovation.title": "Инновации",
+      "about.mission.innovation.desc":
+        "Расширять границы визуализации данных и взаимодействия человек-компьютер в космической науке",
+      "about.mission.community.title": "Сообщество",
+      "about.mission.community.desc":
+        "Формировать глобальное сообщество энтузиастов космоса и исследователей",
+      "about.features.title": "Возможности платформы",
+      "about.features.smartSearch.title": "Умный поиск",
+      "about.features.smartSearch.desc":
+        "Поиск по базе экзопланет NASA с семантическим пониманием на базе ИИ",
+      "about.features.visualization.title": "3D визуализация",
+      "about.features.visualization.desc":
+        "Интерактивные 3D модели планетных систем с реалистичной орбитальной механикой",
+      "about.features.voice.title": "Голосовой помощник TURO",
+      "about.features.voice.desc":
+        "Исследование голосом с использованием естественного языка",
+      "about.features.data.title": "Настоящие данные NASA",
+      "about.features.data.desc":
+        "Прямая интеграция с NASA Exoplanet Archive и Image Library",
+      "about.features.multilang.title": "Многоязычная поддержка",
+      "about.features.multilang.desc":
+        "Доступно на английском, русском, испанском и других языках",
+      "about.features.education.title": "Образовательный контент",
+      "about.features.education.desc":
+        "Обширная информация по астрономии и данные о планетах",
+      "about.tech.title": "Технологический стек",
+      "about.tech.frontend": "Фронтенд",
+      "about.tech.backend": "Бэкенд",
+      "about.tech.aiml": "ИИ и МО",
+      "about.tech.dataSources": "Источники данных",
+      "about.attr.title": "Указание источников",
+      "about.attr.paragraph":
+        "В этом исследовании использован Архив экзопланет NASA, который управляется Калифорнийским технологическим институтом по контракту с Национальным управлением по аэронавтике и исследованию космического пространства.",
+      "about.attr.learnMore": "Подробнее:",
+      "about.attr.link.exoplanetArchive": "Архив экзопланет NASA",
+      "about.attr.badge.nasa": "NASA",
+      "about.attr.badge.publicData": "Открытые данные",
     },
   },
   es: {
@@ -315,6 +413,55 @@ const resources = {
       "common.error": "Error ocurrido",
       "common.retry": "Reintentar",
       "common.close": "Cerrar",
+
+      // About Page
+      "about.hero.subtitle": "Conocimiento Celestial y Observatorio 3D",
+      "about.hero.description":
+        "Nextera transforma la exploración espacial combinando las vastas bases de datos de la NASA con visualización 3D de vanguardia y capacidades de búsqueda impulsadas por IA. Nuestra misión es hacer el universo más accesible para investigadores, educadores y entusiastas del espacio en todo el mundo.",
+      "about.hero.badge.nasa": "Impulsado por la NASA",
+      "about.hero.badge.oss": "Código abierto",
+      "about.hero.badge.international": "Internacional",
+      "about.mission.title": "Nuestra misión",
+      "about.mission.accessibility.title": "Accesibilidad",
+      "about.mission.accessibility.desc":
+        "Hacer que los datos de exploración espacial sean accesibles para todos, independientemente del conocimiento técnico",
+      "about.mission.innovation.title": "Innovación",
+      "about.mission.innovation.desc":
+        "Impulsar los límites de la visualización de datos y la interacción humano-computadora en la ciencia espacial",
+      "about.mission.community.title": "Comunidad",
+      "about.mission.community.desc":
+        "Fomentar una comunidad global de entusiastas del espacio e investigadores",
+      "about.features.title": "Características de la plataforma",
+      "about.features.smartSearch.title": "Búsqueda inteligente",
+      "about.features.smartSearch.desc":
+        "Búsqueda con IA en la base de datos de exoplanetas de la NASA con comprensión semántica",
+      "about.features.visualization.title": "Visualización 3D",
+      "about.features.visualization.desc":
+        "Modelos 3D interactivos de sistemas planetarios con mecánica orbital realista",
+      "about.features.voice.title": "Asistente de voz TURO",
+      "about.features.voice.desc":
+        "Exploración controlada por voz con lenguaje natural",
+      "about.features.data.title": "Datos reales de la NASA",
+      "about.features.data.desc":
+        "Integración directa con el Archivo de Exoplanetas e Image Library de la NASA",
+      "about.features.multilang.title": "Soporte multilingüe",
+      "about.features.multilang.desc":
+        "Disponible en inglés, ruso, español y más idiomas",
+      "about.features.education.title": "Contenido educativo",
+      "about.features.education.desc":
+        "Información completa de astronomía y datos planetarios",
+      "about.tech.title": "Pila tecnológica",
+      "about.tech.frontend": "Frontend",
+      "about.tech.backend": "Backend",
+      "about.tech.aiml": "IA y ML",
+      "about.tech.dataSources": "Fuentes de datos",
+      "about.attr.title": "Atribución de datos",
+      "about.attr.paragraph":
+        "Esta investigación ha utilizado el Archivo de Exoplanetas de la NASA, operado por el Instituto de Tecnología de California bajo contrato con la Administración Nacional de Aeronáutica y del Espacio.",
+      "about.attr.learnMore": "Más información:",
+      "about.attr.link.exoplanetArchive": "Archivo de Exoplanetas de la NASA",
+      "about.attr.badge.nasa": "NASA",
+      "about.attr.badge.publicData": "Datos públicos",
     },
   },
 };
