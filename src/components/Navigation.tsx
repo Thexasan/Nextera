@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Search, Menu, X, Globe, Mic, MicOff } from "lucide-react";
+import { Search, Menu, X, Globe, Mic, MicOff, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import nexteraLogo from "@/assets/nextera-logo.png";
 // import nasaLogo from '@/assets/nasa-logo.png';
+import { supabase } from "@/integrations/supabase/client";
 
 export function Navigation() {
   const { t, i18n } = useTranslation();
@@ -19,6 +20,7 @@ export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -58,6 +60,26 @@ export function Navigation() {
     { code: "ru", name: "Русский" },
     { code: "es", name: "Español" },
   ];
+
+  useEffect(() => {
+    let isMounted = true;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!isMounted) return;
+      setUserEmail(session?.user?.email ?? null);
+    });
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserEmail(session?.user?.email ?? null);
+    });
+    return () => {
+      isMounted = false;
+      data.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
@@ -148,9 +170,31 @@ export function Navigation() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button asChild variant="default" className="stellar-glow">
-              <Link to="/auth">{t("nav.login")}</Link>
-            </Button>
+            {userEmail ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="border-border/50"
+                  >
+                    <User className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="min-w-[220px]">
+                  <div className="px-3 py-2 text-sm text-muted-foreground">
+                    {userEmail}
+                  </div>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    {t("nav.logout")}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild variant="default" className="stellar-glow">
+                <Link to="/auth">{t("nav.login")}</Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -246,13 +290,31 @@ export function Navigation() {
                   </DropdownMenu>
                 </div>
 
-                <Button
-                  asChild
-                  className="mt-4 stellar-glow"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Link to="/auth">{t("nav.login")}</Link>
-                </Button>
+                {userEmail ? (
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="text-sm text-muted-foreground truncate max-w-[60%]">
+                      {userEmail}
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={async () => {
+                        await handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      {t("nav.logout")}
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    asChild
+                    className="mt-4 stellar-glow"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Link to="/auth">{t("nav.login")}</Link>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
