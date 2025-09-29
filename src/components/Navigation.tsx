@@ -1,22 +1,23 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Search, Menu, X, Globe, Mic, MicOff } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
-import nasaLogo from '@/assets/nasa-logo.png';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Search, Menu, X, Globe, Mic, MicOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import nexteraLogo from "@/assets/nextera-logo.png";
+// import nasaLogo from '@/assets/nasa-logo.png';
 
 export function Navigation() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
 
   const changeLanguage = (lng: string) => {
@@ -31,11 +32,13 @@ export function Navigation() {
   };
 
   const startVoiceSearch = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
       setIsListening(true);
-      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+      const SpeechRecognition =
+        (window as any).webkitSpeechRecognition ||
+        (window as any).SpeechRecognition;
       const recognition = new SpeechRecognition();
-      
+
       recognition.lang = i18n.language;
       recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
@@ -43,7 +46,7 @@ export function Navigation() {
         setIsListening(false);
         navigate(`/search?q=${encodeURIComponent(transcript)}`);
       };
-      
+
       recognition.onerror = () => setIsListening(false);
       recognition.onend = () => setIsListening(false);
       recognition.start();
@@ -51,9 +54,9 @@ export function Navigation() {
   };
 
   const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'ru', name: 'Русский' },
-    { code: 'es', name: 'Español' }
+    { code: "en", name: "English" },
+    { code: "ru", name: "Русский" },
+    { code: "es", name: "Español" },
   ];
 
   return (
@@ -61,20 +64,26 @@ export function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 font-orbitron font-bold text-xl">
-            <img src={nasaLogo} alt="NASA" className="h-8 w-8" />
+          <Link
+            to="/"
+            className="flex items-center space-x-3 font-orbitron font-bold text-xl"
+          >
+            <img src={nexteraLogo} alt="NASA" className="h-14 w-14" />
             <span className="bg-gradient-stellar bg-clip-text text-transparent">
               Nextera
             </span>
           </Link>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex items-center flex-1 max-w-md mx-8">
+          <form
+            onSubmit={handleSearch}
+            className="hidden md:flex items-center flex-1 max-w-md mx-8"
+          >
             <div className="relative w-full">
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('nav.search')}
+                placeholder={t("nav.search")}
                 className="pl-10 pr-12 bg-muted/50 border-border/50 focus:border-primary"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -96,38 +105,42 @@ export function Navigation() {
 
           {/* Navigation Links - Desktop */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link 
-              to="/explore" 
+            <Link
+              to="/explore"
               className="text-foreground/80 hover:text-primary transition-colors duration-stellar"
             >
-              {t('nav.explore')}
+              {t("nav.explore")}
             </Link>
-            <Link 
-              to="/astronomy" 
+            <Link
+              to="/astronomy"
               className="text-foreground/80 hover:text-primary transition-colors duration-stellar"
             >
-              {t('nav.astronomy')}
+              {t("nav.astronomy")}
             </Link>
-            <Link 
-              to="/about" 
+            <Link
+              to="/about"
               className="text-foreground/80 hover:text-primary transition-colors duration-stellar"
             >
-              {t('nav.about')}
+              {t("nav.about")}
             </Link>
 
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="border-border/50">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="border-border/50"
+                >
                   <Globe className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {languages.map((lang) => (
-                  <DropdownMenuItem 
+                  <DropdownMenuItem
                     key={lang.code}
                     onClick={() => changeLanguage(lang.code)}
-                    className={i18n.language === lang.code ? 'bg-muted' : ''}
+                    className={i18n.language === lang.code ? "bg-muted" : ""}
                   >
                     {lang.name}
                   </DropdownMenuItem>
@@ -136,7 +149,7 @@ export function Navigation() {
             </DropdownMenu>
 
             <Button asChild variant="default" className="stellar-glow">
-              <Link to="/auth">{t('nav.login')}</Link>
+              <Link to="/auth">{t("nav.login")}</Link>
             </Button>
           </div>
 
@@ -147,7 +160,11 @@ export function Navigation() {
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </Button>
         </div>
 
@@ -161,7 +178,7 @@ export function Navigation() {
                   <Input
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t('nav.search')}
+                    placeholder={t("nav.search")}
                     className="pl-10 pr-12 bg-muted/50 border-border/50"
                   />
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -183,40 +200,42 @@ export function Navigation() {
 
               {/* Mobile Links */}
               <div className="flex flex-col space-y-2">
-                <Link 
-                  to="/explore" 
+                <Link
+                  to="/explore"
                   className="py-2 text-foreground/80 hover:text-primary transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t('nav.explore')}
+                  {t("nav.explore")}
                 </Link>
-                <Link 
-                  to="/astronomy" 
+                <Link
+                  to="/astronomy"
                   className="py-2 text-foreground/80 hover:text-primary transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t('nav.astronomy')}
+                  {t("nav.astronomy")}
                 </Link>
-                <Link 
-                  to="/about" 
+                <Link
+                  to="/about"
                   className="py-2 text-foreground/80 hover:text-primary transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t('nav.about')}
+                  {t("nav.about")}
                 </Link>
-                
+
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-sm text-muted-foreground">Language:</span>
+                  <span className="text-sm text-muted-foreground">
+                    Language:
+                  </span>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm">
                         <Globe className="h-4 w-4 mr-2" />
-                        {languages.find(l => l.code === i18n.language)?.name}
+                        {languages.find((l) => l.code === i18n.language)?.name}
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       {languages.map((lang) => (
-                        <DropdownMenuItem 
+                        <DropdownMenuItem
                           key={lang.code}
                           onClick={() => changeLanguage(lang.code)}
                         >
@@ -227,8 +246,12 @@ export function Navigation() {
                   </DropdownMenu>
                 </div>
 
-                <Button asChild className="mt-4 stellar-glow" onClick={() => setIsMenuOpen(false)}>
-                  <Link to="/auth">{t('nav.login')}</Link>
+                <Button
+                  asChild
+                  className="mt-4 stellar-glow"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Link to="/auth">{t("nav.login")}</Link>
                 </Button>
               </div>
             </div>
